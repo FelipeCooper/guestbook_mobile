@@ -45,6 +45,9 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (BuildContext, index){
                   return index < 10? ListTile(
                     subtitle: Text(data[index]["email"]),
+                    onTap: ()async =>{
+                      await Navigator.pushNamed(context, "messages")
+                    },
                     title: Text(data[index]["name"])):null;
                 }
                 );

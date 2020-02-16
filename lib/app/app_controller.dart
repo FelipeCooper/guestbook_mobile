@@ -1,11 +1,8 @@
 import 'package:mobx/mobx.dart';
 
-//part 'app_controller.g.dart';
+part 'app_controller.g.dart';
 
 class AppController = _AppBase with _$AppController;
-
-class _$AppController {
-}
 
 abstract class _AppBase with Store {
   @observable
