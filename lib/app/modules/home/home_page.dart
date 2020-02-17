@@ -1,31 +1,18 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:guestbook_mobile/app/modules/home/home_controller.dart';
+import 'package:mobx/mobx.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
-  const HomePage({Key key, this.title = "Messages"}) : super(key: key);
+  const HomePage({Key key, this.title = "Login"}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List data = null;
-  Future<String> getData() async {
-    var response = await http.get(
-        Uri.encodeFull("https://jsonplaceholder.typicode.com/users"),
-        headers: {"Accept": "application/json"});
-    data = json.decode(response.body);
-    return "Success!";
-  }
-
-  @override
-  void initState() {
-    this.getData();
-    super.initState();
-  }
+  final homeControler = HomeController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,23 +23,40 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child: 
-          FutureBuilder(
-            future: getData(),
-            builder: (context, snapshot){
-              return ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (BuildContext, index){
-                  return index < 10? ListTile(
-                    subtitle: Text(data[index]["email"]),
-                    onTap: ()async =>{
+         child: Column(
+           crossAxisAlignment: CrossAxisAlignment.center,
+           mainAxisAlignment: MainAxisAlignment.center,
+           children: <Widget>[
+             TextField(
+               keyboardType: TextInputType.emailAddress,
+               onChanged: homeControler.setLogin,
+               decoration: InputDecoration(
+                 labelText: "Login",
+                 labelStyle: TextStyle(fontSize: 30, color: Colors.red)
+               ),
+             ),
+             Observer(
+               builder: (_)=> MaterialButton(
+                minWidth: double.infinity,
+                child: Text(
+                  'Continuar',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+                onPressed:
+                homeControler.login ?
+                ()async =>{
                       await Navigator.pushNamed(context, "messages")
-                    },
-                    title: Text(data[index]["name"])):null;
-                }
-                );
-            },
-          )
+                    }
+                :null,
+                textColor: Colors.white,
+                color: Colors.blue,
+                disabledColor: Colors.grey,
+              )
+             )
+           ],
+           ),
          ),
     );
   }

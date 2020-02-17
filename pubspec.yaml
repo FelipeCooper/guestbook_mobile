@@ -29,6 +29,7 @@ dependencies:
 
 dev_dependencies:
   mockito: ^4.1.1
+  email_validator: ^1.0.4
   mobx_codegen: ^1.0.2
   build_runner: ^1.7.4
   flutter_test:
